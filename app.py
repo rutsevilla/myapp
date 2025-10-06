@@ -29,8 +29,8 @@ HEADER_B     = "#2E498A"   # Degradado header - fin
 CARD_BG      = "rgba(255,255,255,0.10)"  # fondo semitransparente para .box
 TEXT_SOFT    = "#EAF6FF"
 
-LOGO_PATH = "/share/www/projects/js-dir/img/logos/svg-tdp/circle-white.svg"   # ← tu logo
-CSV_PATH  = "/share/home/ruts/notebooks/costa-rica/encuestas_cr.csv"  # ← tu CSV
+LOGO_PATH = "./circle-white.svg"   # ← tu logo
+CSV_PATH  = "./encuestas_cr.csv"  # ← tu CSV
 
 # Utilidad: imagen a DataURI (para <img src="..."> dentro de HTML)
 logo_data_uri = img_to_data_uri(LOGO_PATH)

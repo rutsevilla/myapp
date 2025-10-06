@@ -41,8 +41,8 @@ st.markdown(f"""
 /* 1) Cargar la fuente local (debe existir en .streamlit/static/fonts/poppins/) */
 @font-face {{
   font-family: 'PoppinsLocal';
-  src: url('static/Poppins-Regular.woff2') format('woff2'),
-       url('static/Poppins-Regular.ttf') format('truetype');
+  src: url('./Poppins-Regular.woff2') format('woff2'),
+       url('./Poppins-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;

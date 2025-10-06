@@ -4,6 +4,61 @@ import plotly.graph_objects as go
 import os, base64, mimetypes
 import numpy as np
 import streamlit as st
+from typing import Optional  # <-- agrégalo al inicio del archivo
+
+USERS_CSV = "users.csv"
+
+@st.cache_data
+def _load_users(path=USERS_CSV):
+    return pd.read_csv(path)
+
+def validar_usuario(usuario: str, clave: str) -> bool:
+    df = _load_users()
+    return bool(len(df[(df['usuario'] == usuario) & (df['clave'] == clave)]) > 0)
+
+def get_nombre(usuario: str) -> str:
+    df = _load_users()
+    fila = df[df['usuario'] == usuario]
+    return fila['nombre'].values[0] if not fila.empty else usuario
+
+def login(logo_data_uri: Optional[str] = None, titulo: str = "Iniciar sesión") -> bool:
+    if 'usuario' in st.session_state:
+        return True
+    with st.container(border=True):
+        col_logo, col_title = st.columns([1, 5])
+        with col_logo:
+            if logo_data_uri:
+                st.image(logo_data_uri, width=56)
+        with col_title:
+            st.markdown(f"### {titulo}")
+
+        with st.form('frmLogin'):
+            u = st.text_input('Usuario')
+            p = st.text_input('Password', type='password')
+            ok = st.form_submit_button('Ingresar', type='primary')
+            if ok:
+                if validar_usuario(u, p):
+                    st.session_state['usuario'] = u
+                    st.rerun()
+                else:
+                    st.error("Usuario o clave inválidos", icon=":material/gpp_maybe:")
+    return False
+
+def user_header():
+    """Muestra saludo y botón salir en la parte superior del dashboard."""
+    if 'usuario' not in st.session_state:
+        return
+    nombre = get_nombre(st.session_state['usuario'])
+    col1, col2 = st.columns([5, 1])
+    with col1:
+        st.markdown(f"👋 Bienvenido **{nombre}**")
+    with col2:
+        salir = st.button("Salir", use_container_width=True)
+        if salir:
+            st.session_state.clear()
+            st.rerun()
+
+
 
 # ================== UTILIDADES DE DATOS ==================
 def limpiar_txt(s):

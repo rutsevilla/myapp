@@ -420,6 +420,17 @@ with col1:
                     hole=0.2, color_discrete_sequence=["#E57373", "#FFD54F", "#64B5F6", "#81C784"]
                 )
                 fig_conf_pie.update_traces(textinfo="label+percent", textposition="inside")
+                fig_conf_pie.for_each_trace(
+                    lambda t: t.update(labels=[
+                        {
+                            "Ninguna confianza": "Ninguna",
+                            "Poca confianza": "Poca",
+                            "Alguna confianza": "Alguna",
+                            "Mucha confianza": "Mucha"
+                        }.get(lbl, lbl)
+                        for lbl in t.labels
+                    ])
+                )
                 fig_conf_pie.update_layout(
                     showlegend=False, height=293, margin=dict(l=0, r=0, t=10, b=10),
                     plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)"

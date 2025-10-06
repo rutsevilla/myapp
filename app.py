@@ -41,18 +41,18 @@ if not login(logo_data_uri, "Encuestas de Opinión - Costa Rica"):
     st.stop()
 
 # ================== ESTILOS (UN SOLO BLOQUE) ==================
+# ================== ESTILOS (UN SOLO BLOQUE) ==================
 st.markdown(f"""
 <style>
-/* 1) Cargar la fuente local (debe existir en .streamlit/static/fonts/poppins/) */
+/* 1) Cargar la fuente local */
 @font-face {{
   font-family: 'PoppinsLocal';
-  src: url('./Poppins-Regular.woff2') format('woff2'),
-       url('./Poppins-Regular.ttf') format('truetype');
+  src: url('static/Poppins-Regular.woff2') format('woff2'),
+       url('static/Poppins-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }}
-
 /* 2) Forzar tipografía global con la local primero */
 [data-testid="stAppViewContainer"] * {{
   font-family: 'PoppinsLocal','Poppins',sans-serif !important;
@@ -138,7 +138,11 @@ st.markdown(f"""
 .block-container label:empty {{ margin:0; padding:0; }}
 .main .block-container {{ padding-top: 1.2rem; }}
 footer {{ visibility: hidden; }}
-#MainMenu {{ visibility: hidden; }}
+section[data-testid="stSidebar"] {{ display:none !important; }}
+header[data-testid="stHeader"] {{ display:none !important; }}
+MainMenu {{ visibility: hidden; }}
+main blockquote, .block-container {{ padding-top: 0.6rem; padding-bottom: 0.6rem; }}
+html, body, [data-testid="stAppViewContainer"] {{ height: 100%; overflow: hidden; }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -331,7 +335,7 @@ with col2:
                 height=275,
                 margin=dict(l=0, r=0, t=8, b=0),
                 plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)", xaxis_title=None, yaxis_title=None
+                paper_bgcolor="rgba(0,0,0,0)", xaxis_title=None, yaxis_title=None, legend_title_text=None
             )
         else:
             fig_evol = px.line(pd.DataFrame({"Periodo_str": [], "Valor": [], "tipo": []}))
@@ -483,7 +487,7 @@ with col1:
                             text="Valor", color="Valor", color_continuous_scale="Blues")
                 figp.update_traces(texttemplate="%{x:.1f}%", textposition="outside")
                 figp.update_layout(height=240, coloraxis_showscale=False,
-                                margin=dict(l=0,r=0,t=8,b=0), xaxis_title=None, 
+                                margin=dict(l=0,r=0,t=8,b=0), xaxis_title='%', yaxis_title=None,
                                 plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
                 st.plotly_chart(figp, use_container_width=True)
             else:
@@ -505,12 +509,16 @@ with col1:
                 serie = serie.sort_values("Periodo")
                 serie["Periodo_str"] = serie["Periodo"].dt.strftime("%Y-%m")
                 fig_evo = px.line(serie, x="Periodo_str", y="Valor", color="Item")
-                fig_evo.update_layout(height=240, margin=dict(l=0,r=0,t=0,b=0), xaxis_title=None,
-                                    plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)")
+                fig_evo.update_layout(height=240, margin=dict(l=0,r=0,t=0,b=0), xaxis_title=None, yaxis_title='%',
+                                    plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)", legend_title_text=None)
                 st.plotly_chart(fig_evo, use_container_width=True)
             else:
                 st.info("Sin serie histórica de problemas.")
             st.markdown('</div>', unsafe_allow_html=True)
+
+
+
+
 
 
 

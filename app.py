@@ -35,6 +35,11 @@ CSV_PATH  = "./encuestas_cr.csv"  # ← tu CSV
 # Utilidad: imagen a DataURI (para <img src="..."> dentro de HTML)
 logo_data_uri = img_to_data_uri(LOGO_PATH)
 
+# --- (A) Login gate: si no hay sesión, no se muestra el tablero ---
+# Usa tu logo_data_uri si quieres que aparezca en la tarjeta de login
+if not login(logo_data_uri, "Encuestas de Opinión - Costa Rica"):
+    st.stop()
+
 # ================== ESTILOS (UN SOLO BLOQUE) ==================
 st.markdown(f"""
 <style>
